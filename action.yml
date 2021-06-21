@@ -17,8 +17,8 @@ inputs:
     description: 'The version of the signore CLI to install. Defaults to the most recent version.'
     required: false
     default: 'latest'
-  version_checksum:
-    description: 'The expected checksum to verify the signore CLI against.'
+  archive_checksum:
+    description: 'The expected SHA256 checksum to verify the signore CLI archive against.'
     required: false
     default: ''
 outputs:

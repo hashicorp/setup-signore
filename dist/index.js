@@ -10285,6 +10285,7 @@ var __webpack_exports__ = {};
 const fs = __nccwpck_require__(5747).promises;
 const os = __nccwpck_require__(2087);
 const path = __nccwpck_require__(5622);
+const crypto = __nccwpck_require__(6417);
 
 const compare_versions = __nccwpck_require__(7597);
 
@@ -10323,7 +10324,7 @@ async function run() {
         const client_id = core.getInput('client_id');
         const client_secret = core.getInput('client_secret');
         const version = core.getInput('version');
-        const version_checksum = core.getInput('version_checksum')
+        const archive_checksum = core.getInput('archive_checksum');
 
         const platform = mapOS(os.platform());
         const arch = mapArch(os.arch());
@@ -10356,6 +10357,13 @@ async function run() {
         core.debug(`Downloading ${repo} release from ${url}`);
         const downloadedTar = await tc.downloadTool(url, undefined, auth, {'accept': 'application/octet-stream'});
 
+        if (archive_checksum !== '') {
+            const got_checksum = crypto.createHash('sha256').update(await fs.readFile(downloadedTar)).digest('hex')
+            if (archive_checksum !== got_checksum) {
+                throw new Error(`Checksum mismatch: ${got_checksum} does not match expected checksum ${archive_checksum}`);
+            }
+        }
+
         core.debug(`Extracting ${repo} release`);
         const pathToCLI = await tc.extractTar(downloadedTar);
         core.debug(`${repo} CLI path is ${pathToCLI}.`);
@@ -10366,7 +10374,15 @@ async function run() {
 
         core.addPath(pathToCLI);
 
-        core.debug(`success!`)
+        if (client_id || client_secret) {
+            core.debug(`writing config file`);
+            let configContent = '';
+            configContent += client_id ? `client_id: ${client_id}\n` : ''
+            configContent += client_secret ? `client_secret: ${client_secret}\n` : ''
+            fs.writeFile(path.join(os.homedir(), '.signore', 'config.yaml'), configContent)
+        }
+
+        core.debug(`success: signore has been set up!`);
     } catch (error) {
         core.setFailed(error.message);
     }
