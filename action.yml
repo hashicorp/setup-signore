@@ -20,7 +20,7 @@ inputs:
   version_checksum:
     description: 'The expected checksum to verify the signore CLI against.'
     required: false
-    default: 'latest'
+    default: ''
 outputs:
   version:
     description: 'The version of the signore CLI that was installed.'

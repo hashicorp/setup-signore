@@ -4,6 +4,8 @@ const fs = require('fs').promises;
 const os = require('os');
 const path = require('path');
 
+const compare_versions = require('compare-versions');
+
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
 const io = require('@actions/io');
@@ -44,17 +46,19 @@ async function run() {
         const platform = mapOS(os.platform());
         const arch = mapArch(os.arch());
 
+        // windows binaries are zipped
         const archiveSuffix = platform === 'windows' ? '.zip' : '.tar.gz'
 
-        const octokit = github.getOctokit(github_token)
-        // const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
+        const octokit = github.getOctokit(github_token || process.env.GITHUB_TOKEN)
 
+        // get all releases
         const releases = await octokit.paginate(octokit.rest.repos.listReleases, {owner, repo});
 
+        // if we don't have a specific version, sort releases by
         var releaseToDownload = undefined
         if (version === 'latest' || !version) {
-            releases.sort((a, b) => (a.published_at < b.published_at) ? 1 : -1)
-            releaseToDownload = releases[0]
+            releases.sort((a, b) => compare_versions(a.tag_name, b.tag_name))
+            releaseToDownload = releases[releases.length - 1]
         } else {
             releaseToDownload = releases.filter(release => release.tag_name === version)[0]
         }
@@ -64,11 +68,11 @@ async function run() {
         const expectedAssetName = repo+'_'+versionToDownload.replace('v', '')+'_'+platform+'_'+arch+archiveSuffix
         const assetToDownload = releaseToDownload.assets.filter(asset => asset.name === expectedAssetName)[0]
 
-        url = assetToDownload.browser_download_url
-        auth = 'token ' + github_token
+        const url = assetToDownload.url
+        const auth = 'token ' + (github_token || process.env.GITHUB_TOKEN)
 
         core.debug(`Downloading ${repo} release from ${url}`);
-        const downloadedTar = await tc.downloadTool(url, undefined, auth);
+        const downloadedTar = await tc.downloadTool(url, undefined, auth, {'accept': 'application/octet-stream'});
 
         core.debug(`Extracting ${repo} release`);
         const pathToCLI = await tc.extractTar(downloadedTar);
