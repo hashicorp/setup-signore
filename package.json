@@ -2,6 +2,8 @@
   "name": "setup-signore",
   "version": "1.0.0",
   "description": "setup-signore downloads, installs, and configures the signore signing service client",
+  "license": "MPL-2.0",
+  "publisher": "hashicorp",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +14,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/hashicorp/setup-signore/issues"
   },
