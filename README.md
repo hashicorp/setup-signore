@@ -2,6 +2,8 @@
 
 Download and configure the [signore](https://github.com/hashicorp/signore) signing service.
 
+Originally based off of [setup-terraform](https://github.com/hashicorp/setup-terraform).
+
 ### Usage
 
 Note: see [action.yml](action.yml) for detailed information about configuration and defaults.
@@ -41,6 +43,8 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
 
 ### FAQ
 
+- What Github token do we need?
+  - We need to download a signore release from Github, and because the repository is private we need a token that allows access.
 - What checksum are we verifying?
   - After downloading the os/arch specific `tar` or `zip` archive that contains the signore binary, we compare its SHA256 hash against the user supplied `archive_checksum`
 - How do I get a Github token with access to the signore repo?
