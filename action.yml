@@ -1,0 +1,29 @@
+name: 'setup-signore'
+description: 'setup-signore downloads, installs, and configures the signore signing service client'
+inputs:
+  github_token:
+    description: 'The Github token to use to access the private signore repository.'
+    required: false
+    default: ''
+  client_id:
+    description: 'The client id of your signing client to add to the signore config (optional)'
+    required: false
+    default: ''
+  client_secret:
+    description: 'The client secret of your signing client to add to the signore config (optional)'
+    required: false
+    default: ''
+  version:
+    description: 'The version of the signore CLI to install. Defaults to the most recent version.'
+    required: false
+    default: 'latest'
+  version_checksum:
+    description: 'The expected checksum to verify the signore CLI against.'
+    required: false
+    default: 'latest'
+outputs:
+  version:
+    description: 'The version of the signore CLI that was installed.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,14 @@
+on: [push]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    name: test the action by using it
+    steps:
+      - name: Install signore
+        id: install
+        uses: hashicorp/setup-signore@v1
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+      - name: Print installed signore version
+        run: echo "Installed signore ${{steps.install.outputs.version}}"
