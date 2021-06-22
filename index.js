@@ -68,6 +68,7 @@ async function run() {
         // i.e. signore_0.1.2_darwin_x86_64.tar.gz
         const expectedAssetName = repo+'_'+versionToDownload.replace('v', '')+'_'+platform+'_'+arch+archiveSuffix
         const assetToDownload = releaseToDownload.assets.filter(asset => asset.name === expectedAssetName)[0]
+        core.setOutput("version", versionToDownload)
 
         const url = assetToDownload.url
         const auth = 'token ' + (github_token || process.env.GITHUB_TOKEN)
