@@ -9,7 +9,7 @@ jobs:
         id: install
         uses: hashicorp/setup-signore@main
         with:
-          github_token: ${{secrets.SIGNORE_REPO_GITHUB_TOKEN}}
+          github-token: ${{secrets.SIGNORE_REPO_GITHUB_TOKEN}}
       - name: Print installed signore version
         run: echo "Installed signore ${{steps.install.outputs.version}}"
       - name: Run `signore version`
