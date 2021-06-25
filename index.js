@@ -57,7 +57,7 @@ async function run () {
     } else {
       releaseToDownload = (await client.rest.repos.getReleaseByTag({ owner, repo, tag: version })).data
     }
-    const tag = releaseToDownload.tag_name || version
+    const tag = releaseToDownload.tag_name
     core.setOutput('version', tag)
 
     // i.e. signore_0.1.2_darwin_x86_64.tar.gz
