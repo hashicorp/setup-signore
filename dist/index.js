@@ -12141,16 +12141,16 @@ async function run () {
     // if we don't have specific version, get latest release
     let releaseToDownload
     if (version === 'latest' || !version) {
-      releaseToDownload = await client.rest.repos.getLatestRelease({ owner, repo })
+      releaseToDownload = (await client.rest.repos.getLatestRelease({ owner, repo })).data
     } else {
-      releaseToDownload = await client.rest.repos.getReleaseByTag({ owner, repo, tag: version })
+      releaseToDownload = (await client.rest.repos.getReleaseByTag({ owner, repo, tag: version })).data
     }
-    const tag = releaseToDownload.tag_name
+    const tag = releaseToDownload.tag_name || version
     core.setOutput('version', tag)
 
     // i.e. signore_0.1.2_darwin_x86_64.tar.gz
     const expectedAssetName = `${repo}_${tag.replace('v', '')}_${platform}_${arch}${archiveSuffix}`
-    const assetToDownload = releaseToDownload.assets.find(asset => asset.name === expectedAssetName)[0]
+    const assetToDownload = releaseToDownload.assets.find(asset => asset.name === expectedAssetName)
     if (assetToDownload === undefined) {
       throw new Error(`Unable to find asset matching ${expectedAssetName} in the ${tag} release`)
     }
