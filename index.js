@@ -5,16 +5,15 @@ const os = require('os')
 const path = require('path')
 const crypto = require('crypto')
 
-const compareVersions = require('compare-versions')
-
 const core = require('@actions/core')
 const tc = require('@actions/tool-cache')
-const github = require('@actions/github')
+
+const octokit = require('./octokit')
 
 const owner = 'hashicorp'
 const repo = 'signore'
 
-// copied from setup-terraform
+// adapted from setup-terraform
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [x86_64, 386, arm]
 function mapArch (arch) {
@@ -25,7 +24,7 @@ function mapArch (arch) {
   return mappings[arch] || arch
 }
 
-// copied from setup-terraform
+// adapted from setup-terraform
 // os in [darwin, linux, win32...] (https://nodejs.org/api/os.html#os_os_platform)
 // return value in [darwin, linux, windows]
 function mapOS (os) {
@@ -37,11 +36,11 @@ function mapOS (os) {
 
 async function run () {
   try {
-    const githubToken = core.getInput('github_token')
-    const clientID = core.getInput('client_id')
-    const clientSecret = core.getInput('client_secret')
+    const clientID = core.getInput('client-id')
+    const clientSecret = core.getInput('client-secret')
+    const expectedArchiveChecksum = core.getInput('archive-checksum')
+    const githubToken = core.getInput('github-token')
     const version = core.getInput('version')
-    const expectedArchiveChecksum = core.getInput('archive_checksum')
 
     const platform = mapOS(os.platform())
     const arch = mapArch(os.arch())
@@ -49,44 +48,48 @@ async function run () {
     // windows binaries are zipped
     const archiveSuffix = platform === 'windows' ? '.zip' : '.tar.gz'
 
-    const octokit = github.getOctokit(githubToken || process.env.GITHUB_TOKEN)
+    const client = await octokit(githubToken || process.env.GITHUB_TOKEN)
 
-    // get all releases
-    const releases = await octokit.paginate(octokit.rest.repos.listReleases, { owner, repo })
-
-    // if we don't have a specific version, sort releases by
+    // if we don't have specific version, get latest release
     let releaseToDownload
     if (version === 'latest' || !version) {
-      releases.sort((a, b) => compareVersions(a.tag_name, b.tag_name))
-      releaseToDownload = releases[releases.length - 1]
+      releaseToDownload = await client.rest.repos.getLatestRelease({ owner, repo })
     } else {
-      releaseToDownload = releases.filter(release => release.tag_name === version)[0]
+      releaseToDownload = await client.rest.repos.getReleaseByTag({ owner, repo, tag: version })
     }
-    const versionToDownload = releaseToDownload.tag_name
+    const tag = releaseToDownload.tag_name
+    core.setOutput('version', tag)
 
     // i.e. signore_0.1.2_darwin_x86_64.tar.gz
-    const expectedAssetName = repo + '_' + versionToDownload.replace('v', '') + '_' + platform + '_' + arch + archiveSuffix
-    const assetToDownload = releaseToDownload.assets.filter(asset => asset.name === expectedAssetName)[0]
-    core.setOutput('version', versionToDownload)
+    const expectedAssetName = `${repo}_${tag.replace('v', '')}_${platform}_${arch}${archiveSuffix}`
+    const assetToDownload = releaseToDownload.assets.find(asset => asset.name === expectedAssetName)[0]
+    if (assetToDownload === undefined) {
+      throw new Error(`Unable to find asset matching ${expectedAssetName} in the ${tag} release`)
+    }
 
     const url = assetToDownload.url
     const auth = 'token ' + (githubToken || process.env.GITHUB_TOKEN)
 
     core.debug(`Downloading ${repo} release from ${url}`)
-    const downloadedTar = await tc.downloadTool(url, undefined, auth, { accept: 'application/octet-stream' })
+    const downloadedArchive = await tc.downloadTool(url, undefined, auth, { accept: 'application/octet-stream' })
 
     if (expectedArchiveChecksum !== '') {
-      const downloadedArchiveChecksum = crypto.createHash('sha256').update(await fs.readFile(downloadedTar)).digest('hex')
+      const downloadedArchiveChecksum = crypto.createHash('sha256').update(await fs.readFile(downloadedArchive)).digest('hex')
       if (expectedArchiveChecksum !== downloadedArchiveChecksum) {
         throw new Error(`Checksum mismatch: ${downloadedArchiveChecksum} does not match expected checksum ${expectedArchiveChecksum}`)
       }
     }
 
     core.debug(`Extracting ${repo} release`)
-    const pathToCLI = await tc.extractTar(downloadedTar)
+    let pathToCLI
+    if (archiveSuffix === '.tar.gz') {
+      pathToCLI = await tc.extractTar(downloadedArchive)
+    } else {
+      pathToCLI = await tc.extractZip(downloadedArchive)
+    }
     core.debug(`${repo} CLI path is ${pathToCLI}.`)
 
-    if (!downloadedTar || !pathToCLI) {
+    if (!downloadedArchive || !pathToCLI) {
       throw new Error(`Unable to download ${repo} from ${url}`)
     }
 
