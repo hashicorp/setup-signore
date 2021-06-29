@@ -40,6 +40,7 @@ async function run() {
     const clientSecret = core.getInput('client-secret')
     const expectedArchiveChecksum = core.getInput('archive-checksum')
     const githubToken = core.getInput('github-token')
+    const signer = core.getInput('signer')
     const version = core.getInput('version')
 
     const platform = mapOS(os.platform())
@@ -95,12 +96,14 @@ async function run() {
 
     core.addPath(pathToCLI)
 
-    if (clientID || clientSecret) {
+    if (clientID || clientSecret || signer) {
       core.debug('writing signore config file')
       let configContent = ''
-      configContent += clientID ? `clientID: ${clientID}\n` : ''
-      configContent += clientSecret ? `clientSecret: ${clientSecret}\n` : ''
-      fs.writeFile(path.join(os.homedir(), '.signore', 'config.yaml'), configContent)
+      configContent += clientID ? `client_id: ${clientID}\n` : ''
+      configContent += clientSecret ? `client_secret: ${clientSecret}\n` : ''
+      configContent += signer ? `signer: ${signer}\n` : ''
+      await fs.mkdir(path.join(os.homedir(), '.signore'))
+      await fs.writeFile(path.join(os.homedir(), '.signore', 'config.yaml'), configContent)
     }
 
     core.debug('success: signore has been set up!')

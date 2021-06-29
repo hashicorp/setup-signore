@@ -13,6 +13,10 @@ inputs:
     description: 'The client secret of your signing client to add to the signore config (optional)'
     required: false
     default: ''
+  signer:
+    description: 'The signer to add to the signore config (optional)'
+    required: false
+    default: ''
   version:
     description: 'The version of the signore CLI to install. Defaults to the most recent version.'
     required: false
