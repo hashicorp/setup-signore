@@ -4,6 +4,11 @@ Download and configure the [signore](https://github.com/hashicorp/signore) signi
 
 Originally based off of [setup-terraform](https://github.com/hashicorp/setup-terraform).
 
+This version of the `setup-signore` Action requires a GitHub personal access token to access GitHub's Releases API and has cross-platform support.
+
+If you only need to install Signore on Linux GitHub Runners, consider using the [setup-signore-package](https://github.com/hashicorp/setup-signore-package) Action,
+which does not require any authentication for repositories and Actions in HashiCorp enterprise GitHub organizations.
+
 ### Usage
 
 Note: see [action.yml](action.yml) for detailed information about configuration and defaults.
