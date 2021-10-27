@@ -1,6 +1,6 @@
 const action = require('./action')
 
-async function run() {
+async function run () {
   try {
     await action()
   } catch (err) { }
