@@ -34,7 +34,7 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
     archive-checksum: 6b58be415b3e9b2f77d74f2cf70857819d15df512626658223b2d4a4f3adc404
 ```
 
-#### Install a specific signore client release and configure client-id and client-secret
+#### Install a specific signore client release and configure signer
 
 ```
 - name: Install signore v0.1.2 with client config
@@ -42,8 +42,7 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
   with:
     github-token: ${{secrets.GITHUB_TOKEN_WITH_SIGNORE_REPO_ACCESS}}
     version: v0.1.2
-    client-id: ${{secrets.SIGNORE_CLIENT_ID}}
-    client-secret: ${{secrets.SIGNORE_CLIENT_SECRET}}
+    signer: ${{secrets.SIGNORE_SIGNER}}
 ```
 
 ### FAQ

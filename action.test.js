@@ -34,8 +34,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  delete process.env['INPUT_CLIENT-ID']
-  delete process.env['INPUT_CLIENT-SECRET']
   process.env['INPUT_GITHUB-TOKEN'] = 'testtoken'
   delete process.env.INPUT_SIGNER
   process.env.INPUT_VERSION = 'latest'
@@ -97,60 +95,6 @@ describe('action', () => {
       expect(scope.isDone()).toBeTruthy()
       expect(spyCoreAddPath).toHaveBeenCalled()
       expect(spyCoreSetOutput).toHaveBeenCalledWith('version', 'v0.1.3')
-      done()
-    })
-  })
-
-  test('configures client-id', (done) => {
-    const scope = nock('https://api.github.com')
-      .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
-      .reply(200, mockRelease)
-      .get('/repos/hashicorp/signore/releases/assets/3')
-      .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' })
-
-    fs.mkdtemp(path.join(os.tmpdir(), 'setup-signore-'), async (err, directory) => {
-      if (err) throw err
-
-      process.env['INPUT_CLIENT-ID'] = 'testclientid'
-      process.env.INPUT_VERSION = 'v0.1.3'
-      process.env.RUNNER_TEMP = directory
-
-      const spyOsHomedir = jest.spyOn(os, 'homedir')
-      spyOsHomedir.mockReturnValue(directory)
-
-      const action = require('./action')
-      await expect(await action()).resolves
-      expect(scope.isDone()).toBeTruthy()
-
-      const config = fs.readFileSync(path.resolve(directory, relativeConfigPath), { encoding: 'utf8' })
-      expect(config).toEqual('client_id: testclientid\n')
-      done()
-    })
-  })
-
-  test('configures client-secret', (done) => {
-    const scope = nock('https://api.github.com')
-      .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
-      .reply(200, mockRelease)
-      .get('/repos/hashicorp/signore/releases/assets/3')
-      .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' })
-
-    fs.mkdtemp(path.join(os.tmpdir(), 'setup-signore-'), async (err, directory) => {
-      if (err) throw err
-
-      process.env['INPUT_CLIENT-SECRET'] = 'testclientsecret'
-      process.env.INPUT_VERSION = 'v0.1.3'
-      process.env.RUNNER_TEMP = directory
-
-      const spyOsHomedir = jest.spyOn(os, 'homedir')
-      spyOsHomedir.mockReturnValue(directory)
-
-      const action = require('./action')
-      await expect(await action()).resolves
-      expect(scope.isDone()).toBeTruthy()
-
-      const config = fs.readFileSync(path.resolve(directory, relativeConfigPath), { encoding: 'utf8' })
-      expect(config).toEqual('client_secret: testclientsecret\n')
       done()
     })
   })
