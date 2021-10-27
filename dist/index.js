@@ -23,7 +23,7 @@ const repo = 'signore'
 // adapted from setup-terraform
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [x86_64, 386, arm]
-function mapArch(arch) {
+function mapArch (arch) {
   const mappings = {
     x32: '386',
     x64: 'x86_64'
@@ -34,19 +34,20 @@ function mapArch(arch) {
 // adapted from setup-terraform
 // os in [darwin, linux, win32...] (https://nodejs.org/api/os.html#os_os_platform)
 // return value in [darwin, linux, windows]
-function mapOS(os) {
+function mapOS (os) {
   const mappings = {
     win32: 'windows'
   }
   return mappings[os] || os
 }
 
-async function run() {
+async function run () {
   try {
     const clientID = core.getInput('client-id')
     const clientSecret = core.getInput('client-secret')
     const expectedArchiveChecksum = core.getInput('archive-checksum')
     const githubToken = core.getInput('github-token')
+    const signer = core.getInput('signer')
     const version = core.getInput('version')
 
     const platform = mapOS(os.platform())
@@ -102,12 +103,14 @@ async function run() {
 
     core.addPath(pathToCLI)
 
-    if (clientID || clientSecret) {
+    if (clientID || clientSecret || signer) {
       core.debug('writing signore config file')
       let configContent = ''
-      configContent += clientID ? `clientID: ${clientID}\n` : ''
-      configContent += clientSecret ? `clientSecret: ${clientSecret}\n` : ''
-      fs.writeFile(path.join(os.homedir(), '.signore', 'config.yaml'), configContent)
+      configContent += clientID ? `client_id: ${clientID}\n` : ''
+      configContent += clientSecret ? `client_secret: ${clientSecret}\n` : ''
+      configContent += signer ? `signer: ${signer}\n` : ''
+      await fs.mkdir(path.join(os.homedir(), '.signore'))
+      await fs.writeFile(path.join(os.homedir(), '.signore', 'config.yaml'), configContent)
     }
 
     core.debug('success: signore has been set up!')
@@ -12207,7 +12210,7 @@ var __webpack_exports__ = {};
 (() => {
 const action = __nccwpck_require__(4582)
 
-async function run() {
+async function run () {
   try {
     await action()
   } catch (err) { }

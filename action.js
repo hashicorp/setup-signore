@@ -16,7 +16,7 @@ const repo = 'signore'
 // adapted from setup-terraform
 // arch in [arm, x32, x64...] (https://nodejs.org/api/os.html#os_os_arch)
 // return value in [x86_64, 386, arm]
-function mapArch(arch) {
+function mapArch (arch) {
   const mappings = {
     x32: '386',
     x64: 'x86_64'
@@ -27,14 +27,14 @@ function mapArch(arch) {
 // adapted from setup-terraform
 // os in [darwin, linux, win32...] (https://nodejs.org/api/os.html#os_os_platform)
 // return value in [darwin, linux, windows]
-function mapOS(os) {
+function mapOS (os) {
   const mappings = {
     win32: 'windows'
   }
   return mappings[os] || os
 }
 
-async function run() {
+async function run () {
   try {
     const clientID = core.getInput('client-id')
     const clientSecret = core.getInput('client-secret')
