@@ -5,14 +5,6 @@ inputs:
     description: 'The Github token to use to access the private signore repository.'
     required: false
     default: ''
-  client-id:
-    description: 'The client id of your signing client to add to the signore config (optional)'
-    required: false
-    default: ''
-  client-secret:
-    description: 'The client secret of your signing client to add to the signore config (optional)'
-    required: false
-    default: ''
   signer:
     description: 'The signer to add to the signore config (optional)'
     required: false
