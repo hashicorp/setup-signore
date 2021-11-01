@@ -41,6 +41,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.0.6",
-    "nock": "^13.1.0"
+    "nock": "^13.1.4"
   }
 }
