@@ -17,7 +17,7 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
 
 ```
 - name: Install signore
-  uses: hashicorp/setup-signore@v1
+  uses: hashicorp/setup-signore@v2
   with:
     github-token: ${{secrets.GITHUB_TOKEN_WITH_SIGNORE_REPO_ACCESS}}
 ```
@@ -26,7 +26,7 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
 
 ```
 - name: Install signore v0.1.2 and verify checksum
-  uses: hashicorp/setup-signore@v1
+  uses: hashicorp/setup-signore@v2
   with:
     github-token: ${{secrets.GITHUB_TOKEN_WITH_SIGNORE_REPO_ACCESS}}
     version: v0.1.2
@@ -38,7 +38,7 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
 
 ```
 - name: Install signore v0.1.2 with client config
-  uses: hashicorp/setup-signore@v1
+  uses: hashicorp/setup-signore@v2
   with:
     github-token: ${{secrets.GITHUB_TOKEN_WITH_SIGNORE_REPO_ACCESS}}
     version: v0.1.2
