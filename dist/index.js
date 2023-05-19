@@ -16061,14 +16061,14 @@ module.exports = function client (token) {
       core.warning(`Exhausted rate limit retry count (${rateLimitRetries}) for ${options.method} ${options.url}`)
     },
     onSecondaryRateLimit (retryAfter, options) {
-      core.info(`Abuse limit triggered for request ${options.method} ${options.url} (attempt ${options.request.retryCount}/${secondaryRateLimitRetries})`)
+      core.info(`Secondary rate limit triggered for request ${options.method} ${options.url} (attempt ${options.request.retryCount}/${secondaryRateLimitRetries})`)
 
       if (options.request.retryCount < secondaryRateLimitRetries) {
         core.info(`Retrying after ${retryAfter} seconds`)
         return true
       }
 
-      core.warning(`Exhausted abuse limit retry count (${secondaryRateLimitRetries}) for ${options.method} ${options.url}`)
+      core.warning(`Exhausted secondary rate limit retry count (${secondaryRateLimitRetries}) for ${options.method} ${options.url}`)
     }
   }
 
