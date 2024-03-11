@@ -5,14 +5,26 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'ondemand']
     name: test the action by using it
     steps:
+      - name: Authenticate to Vault
+        id: vault-auth
+        run: vault-auth
+      - name: Fetch Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v2.7.3
+        with:
+          url: ${{ steps.vault-auth.outputs.addr }}
+          caCertificate: ${{ steps.vault-auth.outputs.ca_certificate }}
+          token: ${{ steps.vault-auth.outputs.token }}
+          secrets: |
+            kv/data/github/hashicorp/setup-signore SIGNORE_REPO_GITHUB_TOKEN;
       - name: Install signore
         id: install
         uses: hashicorp/setup-signore@main
         with:
-          github-token: ${{secrets.SIGNORE_REPO_GITHUB_TOKEN}}
+          github-token: ${{ steps.secrets.outputs.SIGNORE_REPO_GITHUB_TOKEN }}
       - name: Print installed signore version
         run: echo "Installed signore ${{steps.install.outputs.version}}"
       - name: Run `signore version`
