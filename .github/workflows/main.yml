@@ -26,6 +26,6 @@ jobs:
         with:
           github-token: ${{ steps.secrets.outputs.SIGNORE_REPO_GITHUB_TOKEN }}
       - name: Print installed signore version
-        run: echo "Installed signore ${{steps.install.outputs.version}}"
+        run: echo "Installed signore ${{ steps.install.outputs.version }}"
       - name: Run `signore version`
         run: signore version
