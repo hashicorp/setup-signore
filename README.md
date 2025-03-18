@@ -1,4 +1,4 @@
-## setup-signore
+# setup-signore
 
 Download and configure the [signore](https://github.com/hashicorp/signore) signing service.
 
@@ -9,22 +9,22 @@ This version of the `setup-signore` Action requires a GitHub personal access tok
 If you only need to install Signore on Linux GitHub Runners, consider using the [setup-signore-package](https://github.com/hashicorp/setup-signore-package) Action,
 which does not require any authentication for repositories and Actions in HashiCorp enterprise GitHub organizations.
 
-### Usage
+## Usage
 
 Note: see [action.yml](action.yml) for detailed information about configuration and defaults.
 
-#### Install the latest signore client release
+### Install the latest signore client release
 
-```
+```yaml
 - name: Install signore
   uses: hashicorp/setup-signore@v2
   with:
     github-token: ${{secrets.GITHUB_TOKEN_WITH_SIGNORE_REPO_ACCESS}}
 ```
 
-#### Install a specific signore client release, verifying its archive checksum
+### Install a specific signore client release, verifying its archive checksum
 
-```
+```yaml
 - name: Install signore v0.1.2 and verify checksum
   uses: hashicorp/setup-signore@v2
   with:
@@ -34,9 +34,9 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
     archive-checksum: 6b58be415b3e9b2f77d74f2cf70857819d15df512626658223b2d4a4f3adc404
 ```
 
-#### Install a specific signore client release and configure signer
+### Install a specific signore client release and configure signer
 
-```
+```yaml
 - name: Install signore v0.1.2 with client config
   uses: hashicorp/setup-signore@v2
   with:
