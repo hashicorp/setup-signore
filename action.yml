@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: MPL-2.0
 
 name: 'setup-signore'
-description: 'setup-signore downloads, installs, and configures the signore signing service client'
+description:
+  'setup-signore downloads, installs, and configures the signore signing service
+  client'
 inputs:
   github-token:
-    description: 'The Github token to use to access the private signore repository.'
+    description:
+      'The Github token to use to access the private signore repository.'
     required: false
     default: ''
   signer:
@@ -13,11 +16,14 @@ inputs:
     required: false
     default: ''
   version:
-    description: 'The version of the signore CLI to install. Defaults to the most recent version.'
+    description:
+      'The version of the signore CLI to install. Defaults to the most recent
+      version.'
     required: false
     default: 'latest'
   archive-checksum:
-    description: 'The expected SHA256 checksum to verify the signore CLI archive against.'
+    description:
+      'The expected SHA256 checksum to verify the signore CLI archive against.'
     required: false
     default: ''
 outputs:
