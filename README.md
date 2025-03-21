@@ -1,17 +1,26 @@
 # setup-signore
 
-Download and configure the [signore](https://github.com/hashicorp/signore) signing service.
+[![GitHub Super-Linter](https://github.com/hashicorp/setup-signore/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
+![CI](https://github.com/hashicorp/setup-signore/action/actions/workflows/ci.yml/badge.svg)
 
-Originally based off of [setup-terraform](https://github.com/hashicorp/setup-terraform).
+Download and configure the [signore](https://github.com/hashicorp/signore)
+signing service.
 
-This version of the `setup-signore` Action requires a GitHub personal access token to access GitHub's Releases API and has cross-platform support.
+Originally based off of
+[setup-terraform](https://github.com/hashicorp/setup-terraform).
 
-If you only need to install Signore on Linux GitHub Runners, consider using the [setup-signore-package](https://github.com/hashicorp/setup-signore-package) Action,
-which does not require any authentication for repositories and Actions in HashiCorp enterprise GitHub organizations.
+This version of the `setup-signore` Action requires a GitHub personal access
+token to access GitHub's Releases API and has cross-platform support.
+
+If you only need to install Signore on Linux GitHub Runners, consider using the
+[setup-signore-package](https://github.com/hashicorp/setup-signore-package)
+Action, which does not require any authentication for repositories and Actions
+in HashiCorp enterprise GitHub organizations.
 
 ## Usage
 
-Note: see [action.yml](action.yml) for detailed information about configuration and defaults.
+Note: see [action.yml](action.yml) for detailed information about configuration
+and defaults.
 
 ### Install the latest signore client release
 
@@ -47,11 +56,14 @@ Note: see [action.yml](action.yml) for detailed information about configuration 
 
 ### FAQ
 
-- What Github token do we need?
-  - We need to download a signore release from Github, and because the repository is private we need a token that allows access.
+- What GitHub token do we need?
+  - We need to download a signore release from GitHub, and because the
+    repository is private we need a token that allows access.
 - What checksum are we verifying?
-  - After downloading the os/arch specific `tar` or `zip` archive that contains the signore binary, we compare its SHA256 hash against the user supplied `archive-checksum`
-- How do I get a Github token with access to the signore repo?
+  - After downloading the os/arch specific `tar` or `zip` archive that contains
+    the signore binary, we compare its SHA256 hash against the user supplied
+    `archive-checksum`
+- How do I get a GitHub token with access to the signore repository?
   - TBD
 - How do I get access to the signore signing service?
   - For now... talk to [Miles](mcrabill@hashicorp.com)
