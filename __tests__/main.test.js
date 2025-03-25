@@ -209,12 +209,16 @@ describe('main.js', () => {
 
     const scope = nock('https://api.github.com')
       .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
-      .reply(403, {
-        message:
-          'You have exceeded a secondary rate limit and have been temporarily blocked from content creation. Please retry your request again later.',
-        documentation_url:
-          'https://docs.github.com/rest/overview/resources-in-the-rest-api#abuse-rate-limits'
-      })
+      .reply(
+        403,
+        {
+          message:
+            'You have exceeded a secondary rate limit and have been temporarily blocked from content creation. Please retry your request again later.',
+          documentation_url:
+            'https://docs.github.com/rest/overview/resources-in-the-rest-api#abuse-rate-limits'
+        },
+        { 'Retry-After': '1' }
+      )
       .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
       .reply(200, mockRelease)
       .get('/repos/hashicorp/signore/releases/assets/3')
@@ -230,7 +234,7 @@ describe('main.js', () => {
     return run().then(() => {
       expect(scope.isDone()).toBeTruthy()
     })
-  }, 10000)
+  })
 
   test('retries rate limit errors', async () => {
     core.getInput
@@ -243,7 +247,9 @@ describe('main.js', () => {
 
     const scope = nock('https://api.github.com')
       .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
-      .reply(429, 'expected rate limit error')
+      .reply(429, 'expected rate limit error', {
+        'Retry-After': '1'
+      })
       .get('/repos/hashicorp/signore/releases/tags/v0.1.3')
       .reply(200, mockRelease)
       .get('/repos/hashicorp/signore/releases/assets/3')

@@ -4,7 +4,8 @@
  */
 
 import * as core from '@actions/core'
-import { GitHub, getOctokitOptions } from '@actions/github/lib/utils'
+import { Octokit } from '@octokit/rest'
+import { getOctokitOptions } from '@actions/github/lib/utils'
 import { retry } from '@octokit/plugin-retry'
 import { throttling } from '@octokit/plugin-throttling'
 
@@ -12,8 +13,8 @@ const rateLimitRetries = 5
 const secondaryRateLimitRetries = 5
 
 function client(token) {
-  const Octokit = GitHub.plugin(throttling, retry)
-  const options = getOctokitOptions(token)
+  const MyOctokit = Octokit.plugin(throttling, retry)
+  let options = getOctokitOptions(token)
 
   options.log = {
     debug: core.debug,
@@ -53,6 +54,6 @@ function client(token) {
     }
   }
 
-  return new Octokit(options)
+  return new MyOctokit(options)
 }
 export default client

@@ -130,6 +130,7 @@ export async function run() {
 
     core.debug('success: signore has been set up!')
   } catch (error) {
+    core.error(error.message)
     core.setFailed(error.message)
   }
 }
