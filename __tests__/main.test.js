@@ -1,4 +1,9 @@
 /**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
+/**
  * Unit tests for the action's main functionality, src/main.js
  *
  * To mock dependencies in ESM, you can create fixtures that export mock

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 // See: https://rollupjs.org/introduction/
 
 import commonjs from '@rollup/plugin-commonjs'

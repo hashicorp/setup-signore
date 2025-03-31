@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 // See: https://eslint.org/docs/latest/use/configure/configuration-files
 
 import { fixupPluginRules } from '@eslint/compat'
