@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 // See: https://jestjs.io/docs/configuration
 
 /** @type {import('jest').Config} */

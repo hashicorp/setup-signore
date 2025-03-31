@@ -1,4 +1,9 @@
 /**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
+/**
  * This file is used to mock the `@actions/core` module in tests.
  */
 import { jest } from '@jest/globals'
