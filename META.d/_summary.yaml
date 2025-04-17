@@ -5,7 +5,7 @@
 schema: 1.1
 
 partition: release-engineering
-category: github-action 
+category: github-action
 
 summary:
   owner: team-selfmanaged-releng
