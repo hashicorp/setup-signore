@@ -4,8 +4,8 @@
 ---
 schema: 1.1
 
-partition: security
-category: cloudsec
+partition: release-engineering
+category: github-action 
 
 summary:
-  owner: team-cloudsec
+  owner: team-self-managed-releng
