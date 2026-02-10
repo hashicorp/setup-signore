@@ -3,12 +3,10 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-'use strict'
-
-import fs from 'fs/promises'
-import os from 'os'
-import path from 'path'
-import crypto from 'crypto'
+import fs from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+import crypto from 'node:crypto'
 
 import * as core from '@actions/core'
 import tc from '@actions/tool-cache'
@@ -80,7 +78,7 @@ export async function run() {
     }
 
     const url = assetToDownload.url
-    const auth = 'token ' + (githubToken || process.env.GITHUB_TOKEN)
+    const auth = `token ${githubToken || process.env.GITHUB_TOKEN}`
 
     core.debug(`Downloading ${repo} release from ${url}`)
     const downloadedArchive = await tc.downloadTool(url, undefined, auth, {

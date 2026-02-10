@@ -11,12 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     name: test the action by using it
     steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
       - name: Install signore
         id: install
-        uses: hashicorp/setup-signore@main
+        uses: ./
         with:
           github-token: ${{secrets.SIGNORE_REPO_GITHUB_TOKEN}}
       - name: Print installed signore version
-        run: echo "Installed signore ${{steps.install.outputs.version}}"
+        env:
+          VERSION: ${{ steps.install.outputs.version }}
+        run: echo "Installed signore ${VERSION}"
       - name: Run `signore version`
         run: signore version
