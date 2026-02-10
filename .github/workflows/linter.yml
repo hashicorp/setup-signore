@@ -55,6 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SIGNORE_REPO_GITHUB_TOKEN }}
           LINTER_RULES_PATH: ${{ github.workspace }}
           VALIDATE_ALL_CODEBASE: true
+          VALIDATE_BIOME_FORMAT: false
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_JSCPD: false

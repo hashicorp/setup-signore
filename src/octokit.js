@@ -14,7 +14,7 @@ const secondaryRateLimitRetries = 5
 
 function client(token) {
   const MyOctokit = Octokit.plugin(throttling, retry)
-  let options = getOctokitOptions(token)
+  const options = getOctokitOptions(token)
 
   options.log = {
     debug: core.debug,
