@@ -12,6 +12,7 @@ import * as core from '@actions/core'
 export const debug = core.debug
 export const error = core.error
 export const info = core.info
+export const isDebug = core.isDebug
 export const getInput = jest.fn()
 export const setOutput = jest.fn()
 export const setFailed = jest.fn()
