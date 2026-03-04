@@ -38,9 +38,9 @@
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
-    "@actions/tool-cache": "^2.0.2",
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0",
+    "@actions/tool-cache": "^4.0.0",
     "@octokit/plugin-retry": "^7.2.0",
     "@octokit/plugin-throttling": "^9.6.0",
     "@octokit/rest": "^21.1.1"

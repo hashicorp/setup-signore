@@ -1,0 +1,22 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "files": {
+    "includes": ["**", "!dist", "!coverage", "!node_modules", "!badges"]
+  },
+  "formatter": {
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "indentStyle": "space",
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "none",
+      "bracketSpacing": true,
+      "arrowParentheses": "always"
+    }
+  }
+}

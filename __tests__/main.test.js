@@ -18,10 +18,10 @@ jest.unstable_mockModule('@actions/core', () => core)
 
 const { run } = await import('../src/main.js')
 
-import fs from 'fs'
-import os from 'os'
-import { fileURLToPath } from 'url'
-import path, { dirname } from 'path'
+import fs from 'node:fs'
+import os from 'node:os'
+import { fileURLToPath } from 'node:url'
+import path, { dirname } from 'node:path'
 
 const relativeConfigPath = '.signore/config.yaml'
 const mockRelease = {
