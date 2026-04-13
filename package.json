@@ -60,7 +60,7 @@
     "make-coverage-badge": "^1.2.0",
     "nock": "^14.0.1",
     "prettier": "^3.5.3",
-    "prettier-eslint": "^16.3.0"
+    "prettier-eslint": "^16.4.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
