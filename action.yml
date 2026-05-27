@@ -30,5 +30,5 @@ outputs:
   version:
     description: 'The version of the signore CLI that was installed.'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
