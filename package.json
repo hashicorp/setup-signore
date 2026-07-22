@@ -64,5 +64,13 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
+  },
+  "overrides": {
+    "undici": "^6.27.0",
+    "prettier-eslint": {
+      "@typescript-eslint/typescript-estree": {
+        "minimatch": "^9.0.7"
+      }
+    }
   }
 }
