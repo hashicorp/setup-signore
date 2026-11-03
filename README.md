@@ -54,6 +54,27 @@ and defaults.
     signer: ${{secrets.SIGNORE_SIGNER}}
 ```
 
+## Token expiry alerts
+
+The [Token Expiry Alerts workflow](.github/workflows/token-expiry-alert.yml)
+checks the GitHub Actions secret `SIGNORE_REPO_GITHUB_TOKEN` daily and can also
+be run manually with `workflow_dispatch`. It reads this secret and the Slack bot
+token directly from GitHub Actions secrets; it does not use Vault.
+
+Add these repository secrets:
+
+- `SIGNORE_REPO_GITHUB_TOKEN`: the GitHub token used to access the private
+  Signore repository.
+- `slack_token`: a Slack bot token with `chat:write` permission and access to
+  `#feed-selfmanaged-releng-alerts` and `#team-selfmanaged-releng`.
+
+The workflow posts an alert to `#feed-selfmanaged-releng-alerts` when the token
+expires within 30 days and escalates to `#team-selfmanaged-releng` when it
+expires within 7 days. An expired or rejected token triggers alerts to both
+channels and fails the workflow. If GitHub does not return an expiration header,
+the workflow warns that it cannot determine expiry. Scheduling begins after the
+workflow is present on the default branch.
+
 ### FAQ
 
 - What GitHub token do we need?
