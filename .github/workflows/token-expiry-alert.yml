@@ -1,0 +1,36 @@
+name: Token Expiry Alerts
+
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signore-token-expiry-alert
+  cancel-in-progress: false
+
+jobs:
+  github-token:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+      - name: Test alert logic
+        run: node --test .github/scripts/token-expiry-alert.test.mjs
+      - name: Check GitHub token expiry and notify Slack
+        env:
+          SIGNORE_REPO_GITHUB_TOKEN: ${{ secrets.SIGNORE_REPO_GITHUB_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.slack_token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          WORKFLOW_RUN_URL:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{
+            github.run_id }}
+        run: node .github/scripts/token-expiry-alert.mjs
